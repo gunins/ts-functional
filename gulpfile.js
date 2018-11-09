@@ -1,5 +1,4 @@
 const gulp = require('gulp');
-require('gulp-stats')(gulp);// collates task stats
 
 const del = require('del');
 const rollup = require('rollup-stream');
@@ -7,7 +6,6 @@ const includePaths = require('rollup-plugin-includepaths');
 const resolve = require('rollup-plugin-node-resolve');
 const source = require('vinyl-source-stream');
 const mocha = require('gulp-mocha');
-const sequence = require('run-sequence');
 const bump = require('gulp-bump');
 const tagVersion = require('gulp-tag-version');
 const git = require('gulp-git');
@@ -25,7 +23,7 @@ gulp.task('clean', () => {
     ]);
 });
 
-gulp.task('client', ['clean'], () => rollup({
+gulp.task('client', gulp.series('clean', () => rollup({
     input:   './src/index.ts',
     format:  'umd',
     name:    'functional',
@@ -38,7 +36,7 @@ gulp.task('client', ['clean'], () => rollup({
             extensions: ['.ts']
         })]
 }).pipe(source('index.js'))
-    .pipe(gulp.dest(`./dist`)));
+    .pipe(gulp.dest(`./dist`))));
 
 gulp.task('runTest', () => {
     process.env.NODE_ENV = 'test';
@@ -54,9 +52,7 @@ gulp.task('rollupTest', () => {
         .pipe(gulp.dest('./target'));
 });
 
-gulp.task('test', done => {
-    sequence('clean', 'rollupTest', 'runTest', done);
-});
+gulp.task('test', gulp.series('clean', 'rollupTest', 'runTest'));
 
 gulp.task('bump', () => gulp.src(['./package.json'])
     .pipe(bump({
@@ -69,8 +65,6 @@ gulp.task('bump', () => gulp.src(['./package.json'])
     .pipe(tagVersion()));
 
 
-
-
 gulp.task('pushTags', (cb) => {
     exec('git push --tags', (err, stdout, stderr) => {
         console.log(stdout);
@@ -79,15 +73,15 @@ gulp.task('pushTags', (cb) => {
     });
 });
 
-gulp.task('updateVersion', done => {
-    return sequence('default', 'bump', 'pushTags', done);
-});
+gulp.task('updateVersion', gulp.series('test', 'client', 'bump', 'pushTags'));
 
-gulp.task('publish', ['updateVersion'], (cb) => {
+gulp.task('publish', gulp.series('updateVersion',(cb) => {
     exec('npm publish ./', (err, stdout, stderr) => {
         console.log(stdout);
         console.log(stderr);
         cb(err);
     });
-});
-gulp.task('default', ['test', 'client']);
+}));
+
+gulp.task('default', gulp.series('test', 'client'));
+
