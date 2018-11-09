@@ -1,35 +1,5 @@
 import {expect} from 'chai';
-import {composeAsync, compose, curry, apply, match, extract} from '../../src/curry';
-
-describe('compose tests', () => {
-    it('compose, shoud pipe result', () => {
-        const a = (_:number):number => _ + 1;
-        const b = (_:number) => _ * 2;
-        const result = compose<number>(a, b)(2);
-        expect(result).to.be.eql(5);
-
-        const resultA = compose(b, a)(2);
-        expect(resultA).to.be.eql(6);
-    });
-    it('composeAsync, shoud take Promise and return Promise', async () => {
-        const a = (_) => Promise.resolve(_ + 1);
-        const b = (_) => Promise.resolve(_ * 2);
-        const result = await composeAsync(a, b)(2);
-        expect(result).to.be.eql(5);
-
-        const resultA = await composeAsync(b, a)(2);
-        expect(resultA).to.be.eql(6);
-    });
-});
-describe('curry Tests', () => {
-    it('curry case', () => {
-        const result = curry((a, b, c) => a + b + c);
-        expect(result(1, 2, 3)).to.be.eql(6);
-        expect(result(1, 2)(3)).to.be.eql(6);
-        expect(result(1)(2)(3)).to.be.eql(6);
-        expect(result(1)(2, 3)).to.be.eql(6);
-    });
-});
+import {apply, match, extract} from '../src/utils';
 
 describe('apply Tests', () => {
     it('apply args to all items in a list', () => {

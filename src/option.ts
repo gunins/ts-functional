@@ -1,4 +1,4 @@
-import {Ifn, IMethods, IMethodsPromise} from './Ioption';
+import {Ifn, IMethods, IMethodsPromise} from './interfaces';
 
 const getMethod = <A>(methods: IMethods<A>[]) => methods.find(({bool}) => bool) || {bool: false};
 //Option will find true statement and returning result (Call by Value)

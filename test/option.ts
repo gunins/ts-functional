@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {option, lazyOption,optionAsync} from '../../src/option';
+import {option, lazyOption,optionAsync} from '../src/option';
 
 describe('test for option(Call by Name)',()=>{
     it('option should return correct value',()=>{

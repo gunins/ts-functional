@@ -1,5 +1,5 @@
 interface Ifn<A> {
-    (): A;
+    (...args:any[]): A;
 }
 
 interface IMethods<A> {
