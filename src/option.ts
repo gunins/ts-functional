@@ -45,7 +45,7 @@ const optionAsync = <A>(...methods: IMethodsPromise<A>[]) => ({
     }
 });
 
-const promiseOption = (cond:boolean) => cond ? Promise.resolve(cond) : Promise.reject(cond);
+const promiseOption = (cond: boolean) => cond ? Promise.resolve(cond) : Promise.reject(cond);
 
 
 export {option, lazyOption, optionAsync, promiseOption};

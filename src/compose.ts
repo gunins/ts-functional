@@ -9,9 +9,9 @@ const compose = <A>(...fns: Ifn<A>[]) => {
 
 const pipeAsync = <A>(fn, ...fns) => (param, ...staticArgs) => fns
     .reduce((acc, f) => acc
-        .then((_):Promise<A> => f(_, ...staticArgs)), fn(param, ...staticArgs));
+        .then((_): Promise<A> => f(_, ...staticArgs)), fn(param, ...staticArgs));
 
-const composeAsync = <A>(...fns:Ifn<Promise<A>>[]) => {
+const composeAsync = <A>(...fns: Ifn<Promise<A>>[]) => {
     const [head, ...tail] = fns.reverse();
     return pipeAsync<A>(head, ...tail);
 };
