@@ -1,3 +1,4 @@
+// @ts-ignore
 import {curry2} from 'ts-curry';
 
 //converge(f, [g, h])(a, b) = f(g(a, b), h(a, b))
