@@ -1,34 +1,34 @@
-interface CurriedInterface1<P0, R> {
-    (p0: P0): R;
+interface CurriedInterface1<A, R> {
+    (p0: A): R;
 };
-interface CurriedInterface2<P0, P1, R> {
-    (p0: P0): {
-        (p1: P1): R;
+interface CurriedInterface2<A, B, R> {
+    (p0: A): {
+        (p1: B): R;
     };
 
-    (p0: P0, p1: P1): R;
+    (p0: A, p1: B): R;
 };
 
-interface CurriedInterface3<P0, P1, P2, R> {
-    (p0: P0, p1: P1, p2: P2): R;
+interface CurriedInterface3<A, B, C, R> {
+    (p0: A, p1: B, p2: C): R;
 
-    (p0: P0, p1: P1): {
-        (p2: P2): R;
+    (p0: A, p1: B): {
+        (p2: C): R;
     };
 
-    (p0: P0): CurriedInterface2<P1, P2, R>;
+    (p0: A): CurriedInterface2<B, C, R>;
 };
 
-interface CurriedInterface4<P0, P1, P2, P3, R> {
-    (p0: P0, p1: P1, p2: P2, p3: P3): R;
+interface CurriedInterface4<A, B, C, D, R> {
+    (p0: A, p1: B, p2: C, p3: D): R;
 
-    (p0: P0, p1: P1, p2: P2): {
-        (p3: P3): R;
+    (p0: A, p1: B, p2: C): {
+        (p3: D): R;
     };
 
-    (p0: P0, p1: P1): CurriedInterface2<P2, P3, R>;
+    (p0: A, p1: B): CurriedInterface2<C, D, R>;
 
-    (p0: P0): CurriedInterface3<P1, P2, P3, R>;
+    (p0: A): CurriedInterface3<B, C, D, R>;
 };
 
 export {CurriedInterface1, CurriedInterface2, CurriedInterface3, CurriedInterface4}

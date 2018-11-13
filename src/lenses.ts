@@ -1,5 +1,4 @@
-// @ts-ignore
-import {curry2, curry3, curry4} from 'ts-curry';
+import {curry2, curry3, curry4} from './curry';
 import {Ilens, Ifn} from './interfaces';
 import {CurriedInterface1, CurriedInterface2, CurriedInterface3} from './curryInterface';
 
@@ -87,10 +86,11 @@ const lensPath = <A, B>(head: string | number, ...tail: (string | number)[]) => 
     const [tailHead, ...tailTail] = tail;
     return {
         get(obj = {}): B {
-            return ifTailHasSize<string | number>(tail) ? view(lensProp<A, B>(head), obj) : view(lensPath<A, B>(tailHead, ...tailTail), obj[head]);
+            return ifTailHasSize<string | number>(tail) ? view(lensProp<A, B>(head), obj) : view<A, B>(lensPath<A,B>(tailHead, ...tailTail), obj[head]);
         },
-        set(val, obj = {}): B {
-            return ifTailHasSize<string | number>(tail) ? set(lensProp<A, B>(head), val, obj) : assoc(head, set(lensPath<A, B>(tailHead, ...tailTail), val, obj[head]), obj);
+        set(val, obj = {}): A {
+            // @ts-ignore
+            return ifTailHasSize<string | number>(tail) ? set<A, B>(lensProp<A, B>(head), val, obj) : assoc(head, set(lensPath<A,B>(tailHead, ...tailTail), val, obj[head]), obj);
         }
     }
 };
