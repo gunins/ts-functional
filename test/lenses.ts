@@ -13,6 +13,7 @@ import {
     overAsync
 } from '../src/lenses';
 import {compose} from '../src/compose';
+import {Ilens} from "../src/interfaces";
 
 describe('tests for lenses', () => {
     it('prop', () => {
@@ -52,16 +53,23 @@ describe('tests for lenses', () => {
 
     });
     it('lens, view, set', () => {
+        interface Idata {
+            id:number,
+            name:string
+        }
         const data = {
             id:   1,
             name: 'foo'
         };
-        const a = lens(prop('id'), assoc('id'));
-        const b = lens(prop('name'), assoc('name'));
-        expect(view(a)(data)).to.be.eql(1);
-        expect(view(b, data)).to.be.eql('foo');
 
-        expect(set(a)(3)(data)).to.be.eql({
+        const a :Ilens<Idata,number> = lens(prop('id'), assoc('id'));
+        const u = view<Idata, number>(a)(data);
+        expect(u).to.be.eql(1);
+
+        const b:Ilens<Idata,string> = lens(prop('name'), assoc('name'));
+                expect(view(b, data)).to.be.eql('foo');
+
+        expect(set<Idata,number>(a)(3)(data)).to.be.eql({
             id:   3,
             name: 'foo'
         });
@@ -91,18 +99,22 @@ describe('tests for lenses', () => {
         });
     });
     it('over', () => {
+        interface Idata {
+            id:number,
+            name:string
+        }
         const data = {
             id:   1,
             name: 'foo'
         };
-        const a = lensProp('id');
-        const b = lensProp('name');
+        const a:Ilens<Idata,number> = lensProp('id');
+        const b:Ilens<Idata,string> = lensProp('name');
 
-        expect(over(a)((a) => a + 2)(data)).to.be.eql({
+        expect(over<Idata,number>(a)((_) => _ + 2)(data)).to.be.eql({
             id:   3,
             name: 'foo'
         });
-        expect(over(b, (_) => _ + '_vasja', data)).to.be.eql({
+        expect(over<Idata,string>(b, (_) => _ + '_vasja', data)).to.be.eql({
             id:   1,
             name: 'foo_vasja'
         });
