@@ -36,4 +36,4 @@ composedAsyncFunction(3)
 aA(3)
     .then(_=>bA(_))
     .then(_=>cA(_))
-    .then(result=>console.log(result))
+    .then(result=>console.log(result));
