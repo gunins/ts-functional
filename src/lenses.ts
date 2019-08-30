@@ -101,16 +101,16 @@ function lensPath<A,
 	: Ilens<A, NonNullable<NonNullable<NonNullable<A>[B]>[C]>[D] | undefined>;
 
 
-function lensPath<A, B>(head: keyof A, ...tail: (string | number)[]): Ilens<A, B> {
+function lensPath(head, ...tail: (string | number)[]){
 	const [tailHead, ...tailTail] = tail;
 	return {
-		get(obj: A): B {
+		get(obj) {
 			// @ts-ignore
-			return ifTailHasSize<string | number>(tail) ? view(lensProp<A, B>(head), obj) : view<A, B>(lensPath<A, B>(tailHead, ...tailTail), (obj || {})[head]);
+			return ifTailHasSize<string | number>(tail) ? view(lensProp(head), obj) : view(lensPath(tailHead, ...tailTail), (obj || {})[head]);
 		},
-		set(val: B, obj: A): A {
+		set(val, obj) {
 			// @ts-ignore
-			return ifTailHasSize<string | number>(tail) ? set<A, B>(lensProp<A, B>(head), val, obj) : assoc(head, set(lensPath<A, B>(tailHead, ...tailTail), val, (obj || {})[head]), obj);
+			return ifTailHasSize<string | number>(tail) ? set(lensProp(head), val, obj) : assoc(head, set(lensPath(tailHead, ...tailTail), val, (obj || {})[head]), obj);
 		}
 	}
 }
