@@ -101,7 +101,7 @@ function lensPath<A,
 	: Ilens<A, NonNullable<NonNullable<NonNullable<A>[B]>[C]>[D] | undefined>;
 
 
-function lensPath(head, ...tail: (string | number)[]){
+function lensPath(head, ...tail: (string | number)[]) {
 	const [tailHead, ...tailTail] = tail;
 	return {
 		get(obj) {
@@ -114,11 +114,5 @@ function lensPath(head, ...tail: (string | number)[]){
 		}
 	}
 }
-
-// a.friends.name;
-//A a
-// (a.friends&&a.friends.name)?a.friends.name:null
-// lensPath('firends','name');
-// view(lensPath('firends','name'));
 
 export {prop, assoc, lens, view, set, over, setOver, overAsync, setOverAsync, lensProp, lensPath}
